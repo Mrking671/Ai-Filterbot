@@ -9,7 +9,7 @@ from PIL import Image, ImageDraw, ImageFont
 import io
 
 # Environment variables
-BOT_TOKENS = os.getenv("BOT_TOKENS").split(",")  # List of bot tokens (comma-separated)
+BOT_TOKENS = os.getenv("BOT_TOKENS").split("6575931823:AAEclAwMUEyCbL_LcltvHLEbOSuSfJaeF5M,6403555393:AAEGiNCnC8biPKXnVaQM7l_El3WI6EcgBaM")  # List of bot tokens (comma-separated)
 WEBHOOK_URL = os.getenv("WEBHOOK_URL")
 IMDB_API_KEY = os.getenv("IMDB_API_KEY", "f054c7d2")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyB4pvkedwMTVVjPp-OzbmTL8SgVJILBI8M")
