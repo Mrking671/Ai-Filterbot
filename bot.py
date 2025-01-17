@@ -74,7 +74,7 @@ async def fetch_movie_info(update: Update, context: ContextTypes.DEFAULT_TYPE):
         poster_url = data.get("Poster")
         random_link = random.choice(DOWNLOAD_LINKS)
         download_button = InlineKeyboardMarkup(
-            [[InlineKeyboardButton("Download Now (PREMIUM Only)💛", url=random_link)]]
+            [[InlineKeyboardButton("🔰𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗 𝗡𝗢𝗪🔻", url=random_link)]]
         )
         if poster_url != "N/A":
             await context.bot.send_photo(
