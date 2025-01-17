@@ -5,8 +5,6 @@ import google.generativeai as genai
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 from datetime import datetime
-from PIL import Image, ImageDraw, ImageFont
-import io
 
 # Environment variables
 BOT_TOKENS = os.getenv("BOT_TOKENS").split(",")  # List of bot tokens (comma-separated)
@@ -15,14 +13,14 @@ IMDB_API_KEY = os.getenv("IMDB_API_KEY", "f054c7d2")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyD4-CYpnPbNDH09iUOwcN8mturxVwc4HMM")
 
 # Admin user IDs for broadcasting
-ADMINS = list(map(int, os.getenv("ADMINS", "2034654684").split(",")))
+ADMINS = list(map(int, os.getenv("ADMINS", "123456789").split(",")))
 
 # List of random download links
 DOWNLOAD_LINKS = [
-    "https://t.me/+ylvI8ZZcge80MWRl",
-    "https://t.me/+nNxrEiZPumNlMjBl",
-    "https://t.me/+nKz9rQJ893BlMGRl",
-    "https://t.me/+ylvI8ZZcge80MWRl"
+    "https://example.com/link1",
+    "https://example.com/link2",
+    "https://example.com/link3",
+    "https://example.com/link4"
 ]
 
 # Configure Gemini API
@@ -37,16 +35,6 @@ def generate_ai_content(prompt: str) -> str:
     except Exception as e:
         print(f"Error generating AI response: {e}")
         return "Error generating AI response."
-
-# Function to delete bot's messages after a delay
-async def delete_bot_message(context):
-    data = context.job.data
-    message = data.get("message")
-    if message:
-        try:
-            await message.delete()
-        except Exception as e:
-            print(f"Error deleting message: {e}")
 
 # Greeting based on time of day
 def get_time_based_greeting():
@@ -63,13 +51,10 @@ def get_time_based_greeting():
 # Handlers
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     greeting = get_time_based_greeting()
-    welcome_text = f"{greeting}😊\n\nsᴇɴᴅ ᴍᴇ ᴀɴʏ ᴍᴏᴠɪᴇ ɴᴀᴍᴇ ᴀɴᴅ sᴇᴇ ᴍᴀɢɪᴄ\nᴘʟᴇᴀsᴇ ᴄʜᴇᴄᴋ ɴᴀᴍᴇ ʙᴇғᴏʀᴇ sᴇᴀʀᴄʜɪɴɢ."
-    message = await update.message.reply_text(welcome_text)
-    context.job_queue.run_once(delete_bot_message, 100, data={"message": message})
+    welcome_text = f"{greeting}😊\n\nWelcome to the bot!"
+    await update.message.reply_text(welcome_text)
 
 async def fetch_movie_info(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if not update.message or not update.message.text:
-        return
     movie_name = update.message.text.strip()
     url = f"http://www.omdbapi.com/?t={movie_name}&apikey={IMDB_API_KEY}"
     response = requests.get(url)
@@ -92,7 +77,7 @@ async def fetch_movie_info(update: Update, context: ContextTypes.DEFAULT_TYPE):
             [[InlineKeyboardButton("Download Now (PREMIUM Only)💛", url=random_link)]]
         )
         if poster_url != "N/A":
-            message = await context.bot.send_photo(
+            await context.bot.send_photo(
                 chat_id=update.message.chat_id,
                 photo=poster_url,
                 caption=reply_text,
@@ -100,27 +85,24 @@ async def fetch_movie_info(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 reply_markup=download_button
             )
         else:
-            message = await update.message.reply_text(
+            await update.message.reply_text(
                 reply_text,
                 parse_mode="Markdown",
                 reply_markup=download_button
             )
     else:
         ai_response = generate_ai_content(f"Can you describe the movie '{movie_name}'?")
-        message = await update.message.reply_text(
+        await update.message.reply_text(
             f"Movie not found in IMDb. Here's an AI-generated description👇:\n\n{ai_response}😊"
         )
-    context.job_queue.run_once(delete_bot_message, 100, data={"message": message})
 
 async def ai_response(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if len(context.args) == 0:
-        message = await update.message.reply_text("Please provide a question. Usage: /ai <your question>😊")
-        context.job_queue.run_once(delete_bot_message, 100, data={"message": message})
+        await update.message.reply_text("Please provide a question. Usage: /ai <your question>😊")
         return
     question = " ".join(context.args)
     ai_reply = generate_ai_content(question)
-    message = await update.message.reply_text(ai_reply)
-    context.job_queue.run_once(delete_bot_message, 100, data={"message": message})
+    await update.message.reply_text(ai_reply)
 
 # Broadcast to all users
 async def broadcast(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -134,6 +116,7 @@ async def broadcast(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     broadcast_message = " ".join(context.args)
     sent_count = 0
+
     for user_id in context.bot_data.get("user_ids", []):
         try:
             await context.bot.send_message(chat_id=user_id, text=broadcast_message)
