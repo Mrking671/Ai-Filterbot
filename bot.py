@@ -12,7 +12,7 @@ import io
 BOT_TOKENS = os.getenv("BOT_TOKENS").split(",")  # List of bot tokens (comma-separated)
 WEBHOOK_URL = os.getenv("WEBHOOK_URL")
 IMDB_API_KEY = os.getenv("IMDB_API_KEY", "f054c7d2")
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyB4pvkedwMTVVjPp-OzbmTL8SgVJILBI8M")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyD4-CYpnPbNDH09iUOwcN8mturxVwc4HMM")
 
 # Configure Gemini API
 genai.configure(api_key=GEMINI_API_KEY)
