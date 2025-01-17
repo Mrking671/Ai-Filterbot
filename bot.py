@@ -13,14 +13,14 @@ IMDB_API_KEY = os.getenv("IMDB_API_KEY", "f054c7d2")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyD4-CYpnPbNDH09iUOwcN8mturxVwc4HMM")
 
 # Admin user IDs for broadcasting
-ADMINS = list(map(int, os.getenv("ADMINS", "123456789").split(",")))
+ADMINS = list(map(int, os.getenv("ADMINS", "2034654684").split(",")))
 
 # List of random download links
 DOWNLOAD_LINKS = [
-    "https://example.com/link1",
-    "https://example.com/link2",
-    "https://example.com/link3",
-    "https://example.com/link4"
+    "https://t.me/+ylvI8ZZcge80MWRl",
+    "https://t.me/+nNxrEiZPumNlMjBl",
+    "https://t.me/+nKz9rQJ893BlMGRl",
+    "https://t.me/+nNxrEiZPumNlMjBl"
 ]
 
 # Configure Gemini API
@@ -51,7 +51,7 @@ def get_time_based_greeting():
 # Handlers
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     greeting = get_time_based_greeting()
-    welcome_text = f"{greeting}😊\n\nWelcome to the bot!"
+    welcome_text = f"{greeting}😊\nᴛʏᴘᴇ ᴀɴʏ ᴍᴏᴠɪᴇ🍿 ɴᴀᴍᴇ ᴀɴs sᴇᴇ ᴍᴀɢɪᴄ.\nɴᴀᴍᴇ sʜᴏᴜʟᴅ ʙᴇ ᴄᴏʀʀᴇᴄᴛ\n\nᴋɢғ ᴍᴏᴠɪᴇ❌ ᴋɢғ✅\nsᴇɴᴅ ᴋɢғ❌ᴋɢғ 𝟸𝟶𝟸𝟸✅"
     await update.message.reply_text(welcome_text)
 
 async def fetch_movie_info(update: Update, context: ContextTypes.DEFAULT_TYPE):
